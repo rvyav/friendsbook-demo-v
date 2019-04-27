@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'r1&cv#m3)(m2%u+%sxy60wqf5-0(zc#cmrdl*y%^&7q=!w!myf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['friendsbook-demo-v.herokuapp.com']
 
 
 # Application definition
