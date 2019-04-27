@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+  {% block body %}
+  {% load static %}
+  {% load crispy_forms_tags %} 
+
+    <div class="container">
+      <div class="col-md-8 mt-3">
+        <div class="container ml-3 mt-4">
+          <div class="card" style="width: 38rem;">
+            <div class="media" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"</div>
+              <a href='{% url "accounts:profile-with-pk" post.author.id %}'><img class="rounded-circle account-img" src="{{ post.author.profile.image.url }}" width="70" height="70"></a>
+              <div class="media-body ml-3">
+                <h6 class="card-subtitle mt-2 mb-2 text-muted"><a href='{% url "accounts:profile-with-pk" post.author.id %}' style="color: #808080;">{{ post.author }}</br></a> <small> posted {{ post.created_at|timesince }} ago</small> </h6> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+          <div class="text-details mt-3 ml-5">  
+            <h3 style="list-style-type: none; font-size: 26px"><b>{{ object.title }}</b></h3>
+          </div> 
+          <div class="container mb-3">
+            <div class="media" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"</div>
+              <div class="media-body ml-3">
+                <a style="color: black;">{{ post.description }}<a href='{% url "posts:posts-details" pk=post.pk %}' style="color: #808080;"></p>  
+              </div>
+            </div>  
+          </div>
+          <div class="other mt-4 ml-5">
+      <!-- Send to update detail page or delete if logged in user -->
+        {% if object.author == user %}
+          <div>
+            <a class='btn btn-secondary btn-sm' href="{% url 'posts:posts-update' object.id %}">Update</a>
+            <a class='btn btn-danger btn-sm' href="{% url 'posts:posts-delete' object.id %}">Delete</a>
+          </div>
+        {% endif %}
+      </div>
+      
+
+  {% endblock body %}

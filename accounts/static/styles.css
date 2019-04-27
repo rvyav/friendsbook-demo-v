@@ -1,0 +1,25 @@
+
+body {
+	color: black;
+}
+
+.bg-light {
+	background-color: #333399 !important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #f8f9fa;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: white;
+}
+
+.navbar-light .navbar-brand {
+    color: #f8f9fa;
+}
+
+
+.navbar-light .navbar-brand:hover {
+    color: white;
+}

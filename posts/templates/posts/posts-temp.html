@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+  {% block body %}
+  {% load static %}
+  {% load crispy_forms_tags %}  
+   
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8 mt-5">
+          <div class="card mt-5" style="width: 38rem;">
+            <div class="card-body">
+              <h2 class="card-title ml-2">Create Post</h2>
+              <a class="btn btn-primary ml-2 mt-3" href="{% url 'posts:posts-create' %}" role="button">Create Post</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="content-section">
+            <h3>Other People</h3>
+            <p class='text-muted'>You can put any information here you'd like.</p>
+            {{ user }}
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+    {% for post in posts %}  <!-- "object_list" instead of "posts", check "views" or  -->
+
+      {% if post.description|length > 150 %}
+
+        <div class="container mt-4 mb-3">
+          <div class="card" style="width: 38rem;">
+            <div class="media" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"</div>
+              <a href='{% url "accounts:profile-with-pk" post.author.id %}'><img class="rounded-circle account-img" src="{{ post.author.profile.image.url }}" width="70" height="70"></a>
+              <div class="media-body ml-3">
+                <h5 class="card-title"><a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;"><b>{{ post.title }}</b></a></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><a href='{% url "accounts:profile-with-pk" post.author.id %}' style="color: #808080;">{{ post.author }}</br></a> <small> posted {{ post.created_at|timesince }} ago</small> </h6>
+                <a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;">{{ post.description|safe|truncatewords:"20"|linebreaks }}<a href='{% url "posts:posts-details" pk=post.pk %}' style="color: #808080;"><small>(Read More)</small></p>  
+                <!-- # Read More Line -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% else %}
+
+        <div class="container mt-4 mb-3">
+          <div class="card" style="width: 38rem;">
+            <div class="media" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"</div>
+              <a href='{% url "accounts:profile-with-pk" post.author.id %}'><img class="rounded-circle account-img" src="{{ post.author.profile.image.url }}" width="70" height="70"></a>
+              <div class="media-body ml-3">
+                <h5 class="card-title"><a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;"><b>{{ post.title }}</b></a></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><a href='{% url "accounts:profile-with-pk" post.author.id %}' style="color: #808080;">{{ post.author }}</br></a> <small> posted {{ post.created_at|timesince }} ago</small> </h6>
+                <a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;">{{ post.description }}<a href='{% url "posts:posts-details" pk=post.pk %}' style="color: #808080;"></p>  
+                <!-- # Read More Line -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% endif %}
+
+
+
+    	<!-- <div class="text-left mt-5 mb-5 ml-2">
+        <div class="card mb-3" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title"><a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;"><b>{{ post.title }}</b></a>  </h5>  
+            <h6 class="card-subtitle mb-2 text-muted"><a href='{% url "accounts:profile-with-pk" post.author.id %}' style="color: #808080;">{{ post.author }}</a></h6> 
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+        </div>
+      </div> -->
+
+	  		<!-- <ul style="list-style-type: none"> -->
+          <!-- url below take you to the detail post -->
+          <!-- for the url to 'post detail', you can also use 'post.id' -->
+	  		 <!--  <li><a href='{% url "posts:posts-details" pk=post.pk %}'>{{ post.title }}</a> by 
+            <a href='{% url "accounts:profile-with-pk" post.author.id %}'>{{ post.author }}</a></li> // #user.id #post.author.id -->
+	  		<!--   <li>{{ post.description }}</li>
+	  		</ul> --> 
+
+      {% endfor %}  
+
+    </div> <!-- # div removed from above -->  
+    </div>
+
+
+	  		
+{% endblock body %}

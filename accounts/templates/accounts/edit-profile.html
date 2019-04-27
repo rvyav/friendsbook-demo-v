@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+    {% block body %}
+    {% load static %}
+    {% load crispy_forms_tags %}  
+
+
+        <div class="container mt-5 mb-5">
+
+            <h3 class="container">
+             <p style="color:red;">PLEASE use .JPG or JPEG (NOT .PNG) file to UPLOAD IMAGES</p>
+            </h3>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{ extended_profile_form|crispy }}
+                <button class="btn btn-primary mt-3" type="submit">Update Profile</button>
+            </form>
+        </div>  
+
+
+    {% endblock body %}

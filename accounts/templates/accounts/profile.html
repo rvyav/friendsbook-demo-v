@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+    {% block body %}
+    {% load static %}
+    {% load crispy_forms_tags %}    
+
+    <div class="container ml-5 mt-5">
+        <div class="card border-dark mb-3" style="max-width: 68rem;">
+          <div class="card-header"><img class="rounded-circle account-img ml-3" src="{{ user.profile.image.url }}"></div>
+          <div class="card-body text-dark">
+            <h2 class="card-title ml-5">{{ user.get_full_name }}</h2>
+            <h4 class="card-text ml-5">{{ user.profile.bio}}</h4>
+            <p class="card-text ml-5">{{ user.profile.location }}</p>
+            {% if user.pk == me.pk %}
+            <a class="btn btn-primary ml-5" href="{% url 'accounts:edit-profile' %}" role="button">Profile</a>
+            <a class="btn btn-danger ml-5" href="{% url 'accounts:change-password' %}" role="button">Change Password</a>
+            {% endif %}
+          </div>
+        </div>
+    </div>
+
+    
+    {% for post in posts %}
+
+      {% if post.description|length > 150 %}
+
+        <div class="container mt-4 mb-3">
+          <div class="card" style="width: 38rem;">
+            <div class="media" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"</div>
+              <a href='{% url "accounts:profile-with-pk" post.author.id %}'><img class="rounded-circle account-img" src="{{ post.author.profile.image.url }}" width="70" height="70"></a>
+              <div class="media-body ml-3">
+                <h5 class="card-title"><a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;"><b>{{ post.title }}</b></a></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><a href='{% url "accounts:profile-with-pk" post.author.id %}' style="color: #808080;">{{ post.author }}</br></a> <small> posted {{ post.created_at|timesince }} ago</small> </h6>
+                <a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;">{{ post.description|safe|truncatewords:"20"|linebreaks }}<a href='{% url "posts:posts-details" pk=post.pk %}' style="color: #808080;"><small>(Read More)</small></p> 
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% else %}
+
+        <div class="container mt-4 mb-3">
+          <div class="card" style="width: 38rem;">
+            <div class="media" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"</div>
+              <a href='{% url "accounts:profile-with-pk" post.author.id %}'><img class="rounded-circle account-img" src="{{ post.author.profile.image.url }}" width="70" height="70"></a>
+              <div class="media-body ml-3">
+                <h5 class="card-title"><a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;"><b>{{ post.title }}</b></a></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><a href='{% url "accounts:profile-with-pk" post.author.id %}' style="color: #808080;">{{ post.author }}</br></a> <small> posted {{ post.created_at|timesince }} ago</small> </h6>
+                <a href='{% url "posts:posts-details" pk=post.pk %}' style="color: black;">{{ post.description }}<a href='{% url "posts:posts-details" pk=post.pk %}' style="color: #808080;"></p> 
+              </div>
+            </div>
+          </div>
+        </div>
+
+      {% endif %}
+
+            </ul>
+
+      {% endfor %}  
+
+
+
+    {% endblock body %}
+
+    
