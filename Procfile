@@ -1,1 +1,1 @@
-web: gunicorn fbook.wsgi  --log-file -
+web: gunicorn friendsbook.wsgi  --log-file -
