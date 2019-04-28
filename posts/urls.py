@@ -1,6 +1,8 @@
 from django.urls import path, include
 from django.contrib import admin
 from . import views
+# Cache
+from django.views.decorators.cache import cache_page
 # Import CBV
 from .views import (
 	PostListView,

@@ -16,6 +16,8 @@ from django.views.generic.edit import FormMixin		# For comment in post details
 
 from accounts.models import Profile, Friend
 
+from django.contrib.auth.decorators import login_required
+
 from django.urls import reverse_lazy	# Post Update reverse
 from django.contrib.auth.mixins import (
 	LoginRequiredMixin, 
@@ -24,11 +26,17 @@ from django.contrib.auth.mixins import (
 
 from django.contrib.auth.models import User    # Added for pk and friend requests
 
+from django.utils.decorators import method_decorator # Decorate class based views
 
-## Class based view use object.title in the template and do not need a for loop)
+from django.views.decorators.cache import cache_page # cache
 
 
+@method_decorator(cache_page(60 * 10), name='dispatch')
 class PostListView(LoginRequiredMixin, ListView):
+	'''
+	Cached class based views with dispacth for 10 minutes
+	60 * 10 = 10 minutes.
+	'''
 	model = Post
 	context_object_name = 'posts' 		# 'object-list' is the name to use to diplay items in templates
 	template_name = 'posts/posts-list.html'
@@ -53,7 +61,7 @@ class PostListView(LoginRequiredMixin, ListView):
 		}
 		return render(request, self.template_name, context=context)
 
-
+@method_decorator(cache_page(60 * 10), name='dispatch')
 class PostDetailView(LoginRequiredMixin, DetailView):
 	'''
 	Also used for comments.
@@ -108,7 +116,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
-
+@method_decorator(cache_page(60 * 10), name='dispatch')
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	''' 
 	Share the exact same method as PostCreateView. Just accesss the update url.
@@ -132,7 +140,6 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 		if self.request.user == post.author:
 			return True
 		return False
-
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 	model = Post

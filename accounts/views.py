@@ -28,6 +28,10 @@ from django.http import HttpResponseRedirect # For FriendRequest
 
 from django.contrib.auth.models import User    # Added for pk and friend requests
 
+from django.utils.decorators import method_decorator # Decorate class based views
+
+from django.views.decorators.cache import cache_page # cache
+
 # Errors
 from django.http import Http404
 
@@ -77,6 +81,7 @@ def register(request):
 
 
 @login_required
+@cache_page(60 * 10)
 def edit_profile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
@@ -103,6 +108,7 @@ def edit_profile(request):
     
 # After changes below
 @login_required
+@cache_page(60 * 10)
 def current_user_profile(request, pk):
     ''' PK of the user page clicked on.'''
     user=get_object_or_404(User, pk=pk)
@@ -113,6 +119,7 @@ def current_user_profile(request, pk):
      
 
 @login_required
+@cache_page(60 * 10)
 def profile(request):
     ''' User who authenticated.'''
     profile = Profile.objects.all()
@@ -138,6 +145,7 @@ def change_password(request):
     return render(request, 'accounts/change-password.html', context)
 
 @login_required
+@cache_page(60 * 10)
 def friends_list(request, *args, **kwargs):
     posts = Post.objects.all()
     users = User.objects.exclude(id=request.user.id).order_by("id")        # five_users = users.order_by("id")[:3]
@@ -157,6 +165,7 @@ def friends_list(request, *args, **kwargs):
 
 
 @login_required
+@cache_page(60 * 10)
 def users_list(request, *args, **kwargs):
     posts = Post.objects.all()
     users = User.objects.exclude(id=request.user.id).order_by("id")        # five_users = users.order_by("id")[:3]
