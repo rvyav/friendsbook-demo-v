@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
     {% block body %}
+    {% load cache %}
     {% load static %}
     {% load crispy_forms_tags %}      
 
@@ -10,7 +11,9 @@
                 <div class="container mt-4 mb-3">
                     <div class="card" style="width: 38rem;">
                       <div class="media" style="padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px"</div>
+                        {% cache 600 profileimage %}
                         <a href='{% url "accounts:profile-with-pk" friend.id %}'><img class="rounded-circle account-img" src="{{ friend.profile.image.url }}" width="70" height="70"></a>
+                        {% endcache %}
                         <div class="media-body ml-3">
                           <h5 class="card-title"><a href='{% url "accounts:profile-with-pk" pk=friend.pk %}' style="color: black;"><b>{{ friend.username }}</b></a></h5>
                           <a href='{% url "accounts:remove-friend" pk=friend.pk %}'>

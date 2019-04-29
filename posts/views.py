@@ -31,7 +31,6 @@ from django.utils.decorators import method_decorator # Decorate class based view
 from django.views.decorators.cache import cache_page # cache
 
 
-@method_decorator(cache_page(60 * 10), name='dispatch')
 class PostListView(LoginRequiredMixin, ListView):
 	'''
 	Cached class based views with dispacth for 10 minutes

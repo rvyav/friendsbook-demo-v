@@ -145,7 +145,6 @@ def change_password(request):
     return render(request, 'accounts/change-password.html', context)
 
 @login_required
-@cache_page(60 * 10)
 def friends_list(request, *args, **kwargs):
     posts = Post.objects.all()
     users = User.objects.exclude(id=request.user.id).order_by("id")        # five_users = users.order_by("id")[:3]
@@ -165,7 +164,6 @@ def friends_list(request, *args, **kwargs):
 
 
 @login_required
-@cache_page(60 * 10)
 def users_list(request, *args, **kwargs):
     posts = Post.objects.all()
     users = User.objects.exclude(id=request.user.id).order_by("id")        # five_users = users.order_by("id")[:3]

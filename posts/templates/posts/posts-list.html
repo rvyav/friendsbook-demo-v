@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
   {% block body %}
+  {% load cache %}
   {% load static %}
   {% load crispy_forms_tags %}  
    
@@ -45,7 +46,7 @@
     </main>
 
     
-
+    {% cache 600 post %}
     {% for post in posts %}  <!-- "object_list" instead of "posts", check "views" or  -->
       {% if post.author in friends or post.author == request.user %}             <!-- Only show posts authors i am friends with  -->
         {% if post.description|length > 150 %}
@@ -105,6 +106,7 @@
 	  		<!--   <li>{{ post.description }}</li>
 	  		</ul> --> 
     {% endfor %}  
+    {% endcache %}
 
     </div> <!-- # div removed from above -->  
     </div>
