@@ -8,7 +8,7 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.forms import UserChangeForm
 
-# Import ModelForm
+
 from django.forms import ModelForm
 from .models import Profile
 
@@ -16,9 +16,7 @@ Profile = get_user_model()
 
 
 class UserLoginForm(forms.Form):
-    ''' 
-    Validate Login form username and password.
-    '''
+    """ Validate Login form username and password."""
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -38,9 +36,7 @@ class UserLoginForm(forms.Form):
 
 
 class UserRegisterForm(forms.ModelForm):
-    ''' 
-    Validate Registration form fields.
-    '''
+    """Validate Registration form fields."""
     email = forms.EmailField(label='Email address')
     first_name = forms.CharField(label='First name', required=False, help_text='Optional')
     last_name = forms.CharField(label='Last name', required=False, help_text='Optional')
@@ -69,9 +65,7 @@ class UserRegisterForm(forms.ModelForm):
 
 
 class EditProfileForm(UserChangeForm):
-    '''
-    Edit Profile.
-    '''
+    """Edit Profile."""
     assword2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
     
     
@@ -82,17 +76,13 @@ class EditProfileForm(UserChangeForm):
         'username',
         'first_name',
         'last_name',
-        # 'password1',
-        # 'password2',
         'email',
         )
 
     def __init__(self, *args, **kwargs):
-        '''
-        Delete password field in edit profile page.
-        '''
+        # Disable password field on edit profile page.
         super(EditProfileForm, self).__init__(*args, **kwargs)
-        self.fields.pop('password')                             # check whether this is best practice
+        self.fields.pop('password')
 
 
 class ProfileForm(forms.ModelForm):

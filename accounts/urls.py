@@ -4,7 +4,8 @@ from . import views
 
 # Errors
 from django.conf.urls import (
-    handler404, handler500 #Errors
+    handler404, 
+    handler500
 )
 
 
@@ -20,7 +21,8 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('profile/<int:pk>/', views.current_user_profile, name='profile-with-pk'),
-    path('add-friend/<int:pk>/', views.add_friend, name='add-friend'),  # changed to two urls below: form profile and user_list
+    # changed to two urls below: form profile and user_list
+    path('add-friend/<int:pk>/', views.add_friend, name='add-friend'),
     path('add-friend-from-users-list/<int:pk>/', views.add_friend_from_users_list, name='add-friend-from-users-list'),
     path('remove-friend/<int:pk>/', views.remove_friend, name='remove-friend'),
     #path('connect/<int:pk>/', views.change_friends, name='change-friends'),

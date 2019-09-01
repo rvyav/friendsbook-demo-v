@@ -7,7 +7,7 @@ from django.contrib.auth import (
     get_user_model
 )
 
-#from django.contrib.auth.views import login as auth_login
+
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import login, logout
 from .forms import (
@@ -24,15 +24,15 @@ from .models import Profile, Friend
 from posts.models import Post
 
 
-from django.http import HttpResponseRedirect # For FriendRequest
+from django.http import HttpResponseRedirect
 
-from django.contrib.auth.models import User    # Added for pk and friend requests
+from django.contrib.auth.models import User
 
-from django.utils.decorators import method_decorator # Decorate class based views
+from django.utils.decorators import method_decorator
 
-from django.views.decorators.cache import cache_page # cache
+from django.views.decorators.cache import cache_page
 
-# Errors
+
 from django.http import Http404
 
 def index(request):
@@ -48,7 +48,6 @@ def login_view(request):
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(username=username, password=password)   
-        # yellow 'password' means from password data submitted in forms, give me password in 'white'
         login(request, user)
         if next:
             return redirect(next)
@@ -85,7 +84,7 @@ def register(request):
 def edit_profile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
-        extended_profile_form = ProfileForm(request.POST,        # Populate image data if POST
+        extended_profile_form = ProfileForm(request.POST,
                                             request.FILES,
                                             instance=request.user.profile)
         
@@ -106,24 +105,24 @@ def edit_profile(request):
 
     return render(request, 'accounts/edit-profile.html', context)
     
-# After changes below
+
 @login_required
 @cache_page(60 * 10)
 def current_user_profile(request, pk):
-    ''' PK of the user page clicked on.'''
+    """User's page clicked on."""
     user=get_object_or_404(User, pk=pk)
     profile = Profile.objects.all()
     posts = Post.objects.filter(author=user.pk)
-    context = {'profile':profile, 'user':user, 'me':request.user, 'posts':posts} # added user for pk
+    context = {'profile':profile, 'user':user, 'me':request.user, 'posts':posts}
     return render(request, 'accounts/profile.html', context) 
      
 
 @login_required
 @cache_page(60 * 10)
 def profile(request):
-    ''' User who authenticated.'''
+    """User who has authenticated."""
     profile = Profile.objects.all()
-    posts = Post.objects.filter(author=request.user)    # (request) means the user who has authenticated
+    posts = Post.objects.filter(author=request.user)
     context = {'profile':profile, 'user':request.user, 'me':request.user, 'posts':posts}
     return render(request, 'accounts/profile.html', context)  
 
@@ -150,10 +149,10 @@ def friends_list(request, *args, **kwargs):
     users = User.objects.exclude(id=request.user.id).order_by("id")        # five_users = users.order_by("id")[:3]
         
     try:
-        friend = Friend.objects.get(current_user=request.user)         # Create a list of friends in relationship with
-        friends = friend.friend_user.all()                              # Create a list of friends in relationship with
+        friend = Friend.objects.get(current_user=request.user)             # Create a list of friends in relationship with
+        friends = friend.friend_user.all()                                 # Create a list of friends in relationship with
     except:
-        friends = Friend.objects.none()                                 # in case there is no relationship start with zero
+        friends = Friend.objects.none()                                    # in case there is no relationship start with zero
     context = {
             'posts':posts,
             'users':users,
@@ -183,25 +182,19 @@ def users_list(request, *args, **kwargs):
 
 
 def add_friend(request, pk):
-    ''' 
-    Add friend in Home Page
-    '''
+    """Add friend in Home Page."""
     new_friend = User.objects.get(pk=pk)
     Friend.make_friend(request.user, new_friend)
     return redirect('posts:posts-list')
 
 def add_friend_from_users_list(request, pk):
-    ''' 
-    Add friend.
-    '''
+    """Add friend."""
     new_friend = User.objects.get(pk=pk)
     Friend.make_friend(request.user, new_friend)
     return redirect('accounts:users-list')
 
 def remove_friend(request, pk):
-    ''' 
-    Remove friend.
-    '''
+    """Remove friend."""
     new_friend = User.objects.get(pk=pk)
     Friend.lose_friend(request.user, new_friend)
     return redirect('accounts:friends-list')

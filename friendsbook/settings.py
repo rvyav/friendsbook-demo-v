@@ -12,6 +12,17 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import dj_database_url 
+from prod_settings import (
+    SAFE,
+    HOSTS,
+    DB_NAME,
+    KEY_ID,
+    ACCESS_KEY,
+    STORAGE_BUCKET_NAME,
+    FILE_OVERWRITE,
+    ACL,
+    FILE_STORAGE
+)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,12 +32,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'r1&cv#m3)(m2%u+%sxy60wqf5-0(zc#cmrdl*y%^&7q=!w!myf'
+SECRET_KEY = SAFE
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['friendsbook-demo-v.herokuapp.com']
+ALLOWED_HOSTS = HOSTS
 
 
 # Application definition
@@ -82,9 +93,9 @@ WSGI_APPLICATION = 'friendsbook.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'friendsbook',
+        'NAME': 'DB_NAME',
         'USER': 'postgres',
-        'PASSWORD': 'JustL@nd18',
+        'PASSWORD': 'DB_PASSWORD',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -139,7 +150,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Static
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Where static files will be stored after using #collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
@@ -151,7 +162,7 @@ MEDIA_URL = '/media/'
 
 # Login and redirect
 
-LOGIN_REDIRECT_URL = '/home' # redirect after Login # Hardcoded
+LOGIN_REDIRECT_URL = '/home' # redirect after Login
 
 LOGOUT_REDIRECT_URL = '/login' # redirect after logout
 
@@ -159,15 +170,17 @@ LOGIN_URL = '/login' # redirect to login if not logged in, decorator
 
 #S3
 
-AWS_ACCESS_KEY_ID = 'AKIA3IYPDJKWQMQTCGOV'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = KEY_ID
 
-AWS_STORAGE_BUCKET_NAME = 'fbookdemo'
+AWS_SECRET_ACCESS_KEY = ACCESS_KEY
 
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None  
+AWS_STORAGE_BUCKET_NAME = STORAGE_BUCKET_NAME
+
+AWS_S3_FILE_OVERWRITE = FILE_OVERWRITE
+
+AWS_DEFAULT_ACL = ACL 
                     
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = FILE_STORAGE
 
 
 # Whitenoise

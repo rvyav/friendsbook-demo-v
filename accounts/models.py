@@ -19,6 +19,7 @@ class Profile(models.Model):
 		return self.user.username
 
 	def save(self, *args, **kwargs):
+		"""Resize Images uploaded in production."""
 		super().save(*args, **kwargs)
 
 		img_read = storage.open(self.image.name, 'r')
@@ -35,7 +36,10 @@ class Profile(models.Model):
 
 		img_read.close()
 
+
+
 	# def save_png(self, *args, **kwargs):
+	#	"""Resize Images uploaded in development."""
 	# 	super().save_png(*args, **kwargs)
 
 	# 	img_read.close()
@@ -53,9 +57,7 @@ class Profile(models.Model):
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-	'''
-	For every new user created, send the properties from Profile.
-	'''
+	"""For every new user created, send the properties from Profile."""
 	if created:
 		Profile.objects.create(user=instance)
 	else:
@@ -63,9 +65,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 
 class Friend(models.Model):
-	''' 
-	Add & Remove a Friend.
-	'''
+	"""Add & Remove a Friend."""
 	friend_user = models.ManyToManyField(User)									# All the people you are friends with
 	current_user = models.ForeignKey(User, 
 									on_delete=models.CASCADE,
@@ -84,6 +84,6 @@ class Friend(models.Model):
 		friend, created = cls.objects.get_or_create(							# Create new user
 				current_user=current_user										# Assign the new user
 			)
-		friend.friend_user.remove(new_friend)										# Add the new user to M2M
+		friend.friend_user.remove(new_friend)									# Add the new user to M2M
 
 
