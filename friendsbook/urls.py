@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
 	path('', include('accounts.urls', namespace='accounts')),
 	path('posts/', include('posts.urls', namespace='posts')),
-    path('admin/', admin.site.urls),
+    path('friendsbook-demo-xxxxx/', admin.site.urls),
 ]
 
 # Media files URL 
